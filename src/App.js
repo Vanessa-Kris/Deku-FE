@@ -1,18 +1,18 @@
 import * as React from "react";
 import "./App.css";
 import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
+//import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
+//import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
+//import ListItemButton from "@mui/material/ListItemButton";
+//import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+//import InboxIcon from "@mui/icons-material/MoveToInbox";
+//import MailIcon from "@mui/icons-material/Mail";
 import { Breakpoint } from "react-socks";
 import messaging from "./messaging.svg";
 import IconButton from "@mui/material/IconButton";
@@ -23,11 +23,13 @@ import ListSubheader from "@mui/material/ListSubheader";
 import Avatar from "@mui/material/Avatar";
 import MenuIcon from "@mui/icons-material/Menu";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SearchIcon from "@mui/icons-material/Search";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Grid from "@mui/material/Grid";
+import { useState } from "react";
 
 const messages = [
   {
@@ -91,6 +93,14 @@ const StyledFab = styled(Fab)({
 });
 
 export default function App() {
+  const [selectedMessage, setSelectedMessage] = useState(null);
+  const [isMessageOpen, setIsMessageOpen] = useState(false);
+
+  const handleOpenMessage = (messageId) => {
+    setSelectedMessage(messageId);
+    setIsMessageOpen(true);
+  };
+
   return (
     <div>
       <Breakpoint large up>
@@ -102,6 +112,7 @@ export default function App() {
                 <Paper square sx={{ pb: "50px" }} position="fixed">
                   <Typography
                     variant="h5"
+                    position="sticky"
                     gutterBottom
                     component="div"
                     sx={{ p: 2, pb: 0 }}
@@ -123,7 +134,7 @@ export default function App() {
                           </ListSubheader>
                         )}
 
-                        <ListItem button>
+                        <ListItem button onClick={() => handleOpenMessage(id)}>
                           <ListItemAvatar>
                             <Avatar alt="Profile Picture" src={person} />
                           </ListItemAvatar>
@@ -139,51 +150,108 @@ export default function App() {
               </React.Fragment>
             </Grid>
             {/* Big column */}
-            <Grid item xs={8} style={{ maxHeight: "100vh", overflow: "auto" }}>
-              <img src={messaging} width="200px" alt="" />
+            <Grid
+              item
+              xs={8}
+              padding="100px"
+              style={{ maxHeight: "100vh", overflow: "auto" }}
+            >
+              {selectedMessage ? (
+                // Render open message view
+                <Box sx={{ bgcolor: "background.secondary.dark" }}>
+                  <div>
+                    <Typography variant="h6" gutterBottom>
+                      {messages[selectedMessage - 1].primary}
+                    </Typography>
+                    <Typography variant="body1">
+                      {messages[selectedMessage - 1].secondary}
+                    </Typography>
+                  </div>
+                </Box>
+              ) : (
+                // Render default view
+                <img
+                  src={messaging}
+                  width="200px"
+                  alt=""
+                  className="messageimage"
+                />
+              )}
             </Grid>
             {/*  */}
           </Grid>
         </Box>
       </Breakpoint>
 
+      {/* Mobile View */}
       <Breakpoint medium down>
         <React.Fragment>
           <CssBaseline />
-          <Paper square sx={{ pb: "50px" }}>
-            <Typography
-              variant="h5"
-              gutterBottom
-              component="div"
-              sx={{ p: 2, pb: 0 }}
-            >
-              Messages
-            </Typography>
-            <List sx={{ mb: 2 }}>
-              {messages.map(({ id, primary, secondary, person }) => (
-                <React.Fragment key={id}>
-                  {id === 1 && (
-                    <ListSubheader sx={{ bgcolor: "background.paper" }}>
-                      Today
-                    </ListSubheader>
-                  )}
+          {isMessageOpen ? (
+            <div>
+              <AppBar position="fixed" color="primary">
+                <Toolbar>
+                  <IconButton
+                    color="inherit"
+                    aria-label="back"
+                    onClick={() => setIsMessageOpen(false)}
+                  >
+                    <ArrowBackIcon />
+                  </IconButton>
+                  <Typography variant="h6" component="div">
+                    Message
+                  </Typography>
+                </Toolbar>
+              </AppBar>
+              <div style={{ marginTop: "64px", padding: "16px" }}>
+                <Typography variant="h6" gutterBottom>
+                  {messages[selectedMessage - 1].primary}
+                </Typography>
+                <Typography variant="body1">
+                  {messages[selectedMessage - 1].secondary}
+                </Typography>
+              </div>
+            </div>
+          ) : (
+            <Paper square sx={{ pb: "50px" }}>
+              <Typography
+                variant="h5"
+                gutterBottom
+                component="div"
+                sx={{ p: 2, pb: 0 }}
+              >
+                Messages
+              </Typography>
+              <List sx={{ mb: 2 }}>
+                {messages.map(({ id, primary, secondary, person }) => (
+                  <React.Fragment key={id}>
+                    {id === 1 && (
+                      <ListSubheader sx={{ bgcolor: "background.paper" }}>
+                        Today
+                      </ListSubheader>
+                    )}
 
-                  {id === 3 && (
-                    <ListSubheader sx={{ bgcolor: "background.paper" }}>
-                      Yesterday
-                    </ListSubheader>
-                  )}
+                    {id === 3 && (
+                      <ListSubheader sx={{ bgcolor: "background.paper" }}>
+                        Yesterday
+                      </ListSubheader>
+                    )}
 
-                  <ListItem button>
-                    <ListItemAvatar>
-                      <Avatar alt="Profile Picture" src={person} />
-                    </ListItemAvatar>
-                    <ListItemText primary={primary} secondary={secondary} />
-                  </ListItem>
-                </React.Fragment>
-              ))}
-            </List>
-          </Paper>
+                    <ListItem
+                      button
+                      onClick={() => handleOpenMessage(id)}
+                      selected={selectedMessage === id}
+                    >
+                      <ListItemAvatar>
+                        <Avatar alt="Profile Picture" src={person} />
+                      </ListItemAvatar>
+                      <ListItemText primary={primary} secondary={secondary} />
+                    </ListItem>
+                  </React.Fragment>
+                ))}
+              </List>
+            </Paper>
+          )}
           <AppBar
             position="fixed"
             color="primary"

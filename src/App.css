@@ -1,0 +1,14 @@
+.message {
+  border-radius: 65px;
+  background: #1F1F1F;
+  box-shadow:  5px -5px 6px #191919,
+               -5px 5px 6px #252525;
+             align-items: flex-start;
+             justify-content: start;
+}
+
+.messageimage {
+  align-items: center;
+  justify-content: center;
+  display: flex !important;
+}
