@@ -33,6 +33,7 @@ import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import InputBase from "@mui/material/InputBase";
 import SendIcon from "@mui/icons-material/Send";
+import { TextField } from "@mui/material";
 
 const messages = [
   {
@@ -119,24 +120,8 @@ const messages = [
     id: 11,
     recipient: "Harper",
     message: `
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc consequat metus a egestas aliquet. Sed non erat sodales, dignissim risus ut, molestie turpis. Integer consequat velit ut neque viverra, sed posuere justo consectetur. Sed sit amet aliquam neque. Pellentesque imperdiet ante molestie, accumsan metus id, aliquet ligula. In ultrices laoreet leo, at sollicitudin turpis tempor in. Ut at neque feugiat turpis ullamcorper tristique et vel nulla. Nulla dictum vitae magna quis luctus.
-      
-      Aenean vehicula, velit ultrices fermentum feugiat, nibh diam dignissim tellus, vitae iaculis est augue at nisl. Vestibulum quis faucibus massa, in finibus odio. Maecenas est dolor, tincidunt id luctus nec, ultricies in leo. Etiam varius posuere rhoncus. Aenean volutpat dui lorem, eget aliquam risus scelerisque at. Proin feugiat vestibulum mi, vel dignissim mauris iaculis et. Aenean commodo tortor vulputate lacus sagittis, id fermentum nisi porttitor. Nullam vitae convallis sem, in lobortis sapien. Maecenas convallis lectus sit amet urna semper tincidunt. In aliquet maximus dolor, viverra porttitor metus semper eget. Quisque dictum mi id lorem suscipit luctus. Vestibulum et mattis mi. Vivamus tellus nulla, tempor eu metus at, tincidunt lacinia elit. Sed lacinia, arcu quis tincidunt egestas, nunc est rutrum augue, nec mollis arcu magna ut tortor. Proin nunc ante, dapibus non neque nec, pharetra pulvinar arcu.
-      
-      Integer lectus enim, imperdiet in felis eget, dignissim dapibus diam. Duis commodo purus purus, non bibendum lorem fermentum egestas. Duis et metus orci. Maecenas ullamcorper ante vel sem fringilla maximus. Pellentesque vulputate purus est, et tempor enim egestas eget. Praesent sapien massa, accumsan eu iaculis eu, lacinia vitae metus. Cras vitae posuere lacus. Integer vestibulum sollicitudin nunc at luctus. Vestibulum vel tincidunt lectus.
-      
-      Sed iaculis eleifend ultrices. Mauris dapibus mi non pellentesque tempus. Praesent fringilla a nisi et viverra. Curabitur risus nunc, tincidunt eget nisl nec, venenatis consectetur sapien. Mauris tristique iaculis enim, in euismod eros. Fusce non condimentum purus, tempus luctus mi. Nunc vitae ante at velit tristique tincidunt. Quisque eu molestie ante, vitae viverra neque.
-      
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc consequat metus a egestas aliquet. Sed non erat sodales, dignissim risus ut, molestie turpis. Integer consequat velit ut neque viverra, sed posuere justo consectetur. Sed sit amet aliquam neque. Pellentesque imperdiet ante molestie, accumsan metus id, aliquet ligula. In ultrices laoreet leo, at sollicitudin turpis tempor in. Ut at neque feugiat turpis ullamcorper tristique et vel nulla. Nulla dictum vitae magna quis luctus.
-
-Aenean vehicula, velit ultrices fermentum feugiat, nibh diam dignissim tellus, vitae iaculis est augue at nisl. Vestibulum quis faucibus massa, in finibus odio. Maecenas est dolor, tincidunt id luctus nec, ultricies in leo. Etiam varius posuere rhoncus. Aenean volutpat dui lorem, eget aliquam risus scelerisque at. Proin feugiat vestibulum mi, vel dignissim mauris iaculis et. Aenean commodo tortor vulputate lacus sagittis, id fermentum nisi porttitor. Nullam vitae convallis sem, in lobortis sapien. Maecenas convallis lectus sit amet urna semper tincidunt. In aliquet maximus dolor, viverra porttitor metus semper eget. Quisque dictum mi id lorem suscipit luctus. Vestibulum et mattis mi. Vivamus tellus nulla, tempor eu metus at, tincidunt lacinia elit. Sed lacinia, arcu quis tincidunt egestas, nunc est rutrum augue, nec mollis arcu magna ut tortor. Proin nunc ante, dapibus non neque nec, pharetra pulvinar arcu.
-
-Integer lectus enim, imperdiet in felis eget, dignissim dapibus diam. Duis commodo purus purus, non bibendum lorem fermentum egestas. Duis et metus orci. Maecenas ullamcorper ante vel sem fringilla maximus. Pellentesque vulputate purus est, et tempor enim egestas eget. Praesent sapien massa, accumsan eu iaculis eu, lacinia vitae metus. Cras vitae posuere lacus. Integer vestibulum sollicitudin nunc at luctus. Vestibulum vel tincidunt lectus.
-
-Sed iaculis eleifend ultrices. Mauris dapibus mi non pellentesque tempus. Praesent fringilla a nisi et viverra. Curabitur risus nunc, tincidunt eget nisl nec, venenatis consectetur sapien. Mauris tristique iaculis enim, in euismod eros. Fusce non condimentum purus, tempus luctus mi. Nunc vitae ante at velit tristique tincidunt. Quisque eu molestie ante, vitae viverra neque.
-
-Suspendisse lacinia ligula eu purus fermentum semper. Mauris eu metus auctor, euismod ligula eu, pulvinar metus. Curabitur quis tempor neque. Nam vitae arcu non nulla tristique pulvinar nec imperdiet orci. Etiam cursus ac est ut lacinia. Mauris sodales vestibulum tellus. Nam elementum mauris ante, non congue purus iaculis vel. Donec pretium, orci eu pretium malesuada, nibh augue rutrum turpis, sagittis interdum ligula mi eget ipsum. Praesent vulputate posuere aliquet. Cras gravida viverra neque, sit amet ultricies augue feugiat sollicitudin. Vivamus efficitur imperdiet nulla, non cursus risus mattis in. Suspendisse vulputate est quis dui efficitur pretium. In lacinia vulputate lectus, ut convallis metus interdum vitae. Phasellus sit amet mi tempor, consequat leo nec, mollis massa. `,
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc consequat metus a egestas aliquet. Sed non erat sodales, dignissim risus ut, molestie turpis. Integer consequat velit ut neque viverra, sed posuere justo consectetur. Sed sit amet aliquam neque. Pellentesque imperdiet ante molestie, accumsan metus id, aliquet ligula. In ultrices laoreet leo, at sollicitudin turpis tempor in. Ut at neque feugiat turpis ullamcorper tristique et vel nulla. Nulla dictum vitae magna quis luctus. 
+     `,
     avatar: "",
     date: "2023-06-23T13:20:00Z",
   },
@@ -314,25 +299,27 @@ export default function App() {
             {/* Big column */}
             <Grid
               item
-              xs={8}
-              padding="100px"
-              style={{ maxHeight: "100vh", overflow: "auto" }}
+              xs={9}
+              fullWidth
+              //padding="100px"
+              alignItems="center"
+              style={{ maxHeight: "100vh", width: "100%", overflow: "auto" }}
             >
               {selectedMessage ? (
                 // Render open message view
-                <Box sx={{ bgcolor: "background.message.dark" }}>
+                <Box sx={{ bgcolor: "background.message.dark", width: "100%" }}>
                   <Typography
                     variant="h5"
                     position="sticky"
                     gutterBottom
-                    component="div"
+                    component="nav"
                     sx={{
                       p: 2,
                       pb: 0,
                       top: 0,
-                      zIndex: 1,
+                      //zIndex: 1,
                     }}
-                    bgcolor={"red"}
+                    bgcolor={"#000000"}
                   >
                     {
                       messages.find((item) => item.id === selectedMessage)
@@ -340,12 +327,15 @@ export default function App() {
                     }
                   </Typography>
 
-                  <Typography variant="body1">
-                    {
-                      messages.find((item) => item.id === selectedMessage)
-                        ?.message
-                    }
-                  </Typography>
+                  <Box className="recipient">
+                    {/* <Avatar src={recipient[0]}></Avatar> */}
+                    <Typography variant="body1">
+                      {
+                        messages.find((item) => item.id === selectedMessage)
+                          ?.message
+                      }
+                    </Typography>
+                  </Box>
 
                   <Grid
                     item
@@ -353,11 +343,13 @@ export default function App() {
                     style={{ position: "fixed", bottom: 0, zIndex: 2 }}
                     width="70%"
                     mb={5}
-                    bgcolor={"red"}
+                    // borderRadius={"20%"}
+                    // bgcolor={"#97B5F3"}
+                    boxShadow={"inset 27px -27px 87px #000000"}
                   >
                     {/* Send Message Input */}
                     <Box display="flex" alignItems="center" padding="8px">
-                      <InputBase
+                      <TextField
                         placeholder="Type your message..."
                         style={{
                           borderBottom: "1px solid #ccc",
