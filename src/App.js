@@ -1,183 +1,157 @@
-import * as React from "react";
-import "./App.css";
-import Box from "@mui/material/Box";
-//import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-//import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-//import ListItemButton from "@mui/material/ListItemButton";
-//import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-//import InboxIcon from "@mui/icons-material/MoveToInbox";
-//import MailIcon from "@mui/icons-material/Mail";
-import { Breakpoint } from "react-socks";
-import messaging from "./messaging.svg";
-import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
-import Fab from "@mui/material/Fab";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListSubheader from "@mui/material/ListSubheader";
-import Avatar from "@mui/material/Avatar";
-import MenuIcon from "@mui/icons-material/Menu";
-import AddIcon from "@mui/icons-material/Add";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import SearchIcon from "@mui/icons-material/Search";
-import MoreIcon from "@mui/icons-material/MoreVert";
-import { styled } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Grid from "@mui/material/Grid";
-import { useState } from "react";
-import { formatDistanceToNow } from "date-fns";
-import InputBase from "@mui/material/InputBase";
+import React, { useState } from "react";
+import {
+  Box,
+  Grid,
+  Paper,
+  Typography,
+  List,
+  ListSubheader,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  TextField,
+  IconButton,
+  ListItemSecondaryAction,
+  Badge,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { TextField } from "@mui/material";
+import { formatDistanceToNow } from "date-fns";
+import { Breakpoint } from "react-socks";
+import CssBaseline from "@mui/material/CssBaseline";
 
 const messages = [
   {
     id: 1,
+    sender: "Me",
     recipient: "Emily",
     message:
       "Do you have a suggestion for a good present for John on his work anniversary? I am really confused and would love your thoughts on it.",
     avatar: "",
-    date: "2023-02-12T09:30:00Z",
+    timestamp: "2023-02-12T09:30:00Z",
   },
   {
     id: 2,
+    sender: "Me",
     recipient: "Sophia",
     message:
       "I need your help with finding a great gift for John's work anniversary. Any ideas? I'm quite unsure about what to get.",
     avatar: "",
-    date: "2023-03-05T14:45:00Z",
+    timestamp: "2023-03-05T14:45:00Z",
   },
   {
     id: 3,
+    sender: "Me",
     recipient: "Ethan",
     message:
       "Hey there! Can you assist me in selecting a suitable present for John on his work anniversary? I'm really confused and could use some suggestions.",
     avatar: "",
-    date: "2023-04-18T10:20:00Z",
+    timestamp: "2023-04-18T10:20:00Z",
   },
   {
     id: 4,
+    sender: "Me",
     recipient: "Olivia",
     message:
       "Could you please recommend a good gift for John on his work anniversary? I'm feeling quite indecisive and would appreciate your input.",
     avatar: "",
-    date: "2023-01-23T16:10:00Z",
+    timestamp: "2023-01-23T16:10:00Z",
   },
   {
     id: 5,
-    recipient: "Liam",
+    sender: "Olivia",
+    recipient: "Me",
     message:
-      "I'm struggling to come up with a great present for John's work anniversary. Any suggestions? Your thoughts would be really helpful!",
+      "Could you please recommend a good gift for John on his work anniversary? I'm feeling quite indecisive and would appreciate your input.",
     avatar: "",
-    date: "2023-06-07T12:50:00Z",
-  },
-  {
-    id: 6,
-    recipient: "Ava",
-    message:
-      "Do you have any ideas for a good gift for John's work anniversary? I'm feeling quite lost and would appreciate some guidance.",
-    avatar: "",
-    date: "2023-05-02T09:25:00Z",
-  },
-  {
-    id: 7,
-    recipient: "Noah",
-    message:
-      "I'm really confused about what to get for John on his work anniversary. Can you help me out with some suggestions?",
-    avatar: "",
-    date: "2023-03-19T14:30:00Z",
-  },
-  {
-    id: 8,
-    recipient: "Mia",
-    message:
-      "Hey! I'm struggling to find the perfect gift for John on his work anniversary. Any recommendations? Your input would be highly appreciated.",
-    avatar: "",
-    date: "2023-02-06T11:40:00Z",
-  },
-  {
-    id: 9,
-    recipient: "James",
-    message:
-      "I need some suggestions for a good present for John on his work anniversary. I'm really confused and would love to hear your thoughts.",
-    avatar: "",
-    date: "2023-05-14T16:55:00Z",
-  },
-  {
-    id: 10,
-    recipient: "Harper",
-    message:
-      "Can you help me come up with a great gift idea for John's work anniversary? I'm having trouble deciding and would value your opinion.",
-    avatar: "",
-    date: "2023-01-28T13:20:00Z",
-  },
-  {
-    id: 11,
-    recipient: "Harper",
-    message: `
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc consequat metus a egestas aliquet. Sed non erat sodales, dignissim risus ut, molestie turpis. Integer consequat velit ut neque viverra, sed posuere justo consectetur. Sed sit amet aliquam neque. Pellentesque imperdiet ante molestie, accumsan metus id, aliquet ligula. In ultrices laoreet leo, at sollicitudin turpis tempor in. Ut at neque feugiat turpis ullamcorper tristique et vel nulla. Nulla dictum vitae magna quis luctus. 
-     `,
-    avatar: "",
-    date: "2023-06-23T13:20:00Z",
+    timestamp: "2023-01-23T16:10:00Z",
   },
 ];
 
-const groupedMessages = {};
+const groupThreads = (messages) => {
+  const threads = {};
 
-messages.sort((a, b) => new Date(b.date) - new Date(a.date));
+  for (const message of messages) {
+    const sender = message.sender;
+    const recipient = message.recipient;
 
-messages.forEach((message) => {
-  const messageDate = new Date(message.date);
+    // Generate a unique thread ID based on the sender and recipient
+    const threadId1 = `${sender}-${recipient}`;
+    const threadId2 = `${recipient}-${sender}`;
+
+    // Check if the thread already exists using both thread IDs
+    if (threadId1 in threads) {
+      threads[threadId1].push(message);
+    } else if (threadId2 in threads) {
+      threads[threadId2].push(message);
+    } else {
+      // If the thread doesn't exist, create a new one
+      threads[threadId1] = [message];
+    }
+  }
+
+  return threads;
+};
+
+const sortThreads = (threads) => {
+  const sortedThreads = Object.values(threads).sort((a, b) => {
+    const latestMessageA = a[a.length - 1].timestamp;
+    const latestMessageB = b[b.length - 1].timestamp;
+    return latestMessageB - latestMessageA;
+  });
+  return sortedThreads;
+};
+
+let lastLabel = "";
+
+const getThreadLabel = (timestamp) => {
+  const messageDate = new Date(timestamp);
   const currentDate = new Date();
+  let label = "";
 
   if (
     messageDate.getDate() === currentDate.getDate() &&
     messageDate.getMonth() === currentDate.getMonth() &&
     messageDate.getFullYear() === currentDate.getFullYear()
   ) {
-    message.label = "Today";
+    label = "Today";
   } else if (
     messageDate.getDate() === currentDate.getDate() - 1 &&
     messageDate.getMonth() === currentDate.getMonth() &&
     messageDate.getFullYear() === currentDate.getFullYear()
   ) {
-    message.label = "Yesterday";
+    label = "Yesterday";
   } else {
-    message.label = formatDistanceToNow(messageDate, { addSuffix: true });
+    label = formatDistanceToNow(messageDate, { addSuffix: true });
   }
 
-  if (message.label) {
-    if (!groupedMessages[message.label]) {
-      groupedMessages[message.label] = [];
-    }
-    groupedMessages[message.label].push(message);
+  if (lastLabel === label) {
+    return "";
   }
-});
 
-const StyledFab = styled(Fab)({
-  position: "absolute",
-  zIndex: 1,
-  top: -30,
-  left: 0,
-  right: 0,
-  margin: "0 auto",
-});
+  lastLabel = label;
+  return label;
+};
 
 export default function App() {
-  const [selectedMessage, setSelectedMessage] = useState(null);
+  const [selectedThread, setSelectedThread] = useState(null);
   const [inputMessage, setInputMessage] = useState("");
 
-  const handleOpenMessage = (messageId) => {
-    setSelectedMessage(messageId);
+  const threads = sortThreads(groupThreads(messages));
+
+  const handleOpenThread = (threadIndex) => {
+    setSelectedThread(threadIndex);
   };
 
   const handleSendMessage = () => {
-    // Implement your logic to send the message here
+    messages.push({
+      id: 3,
+      sender: "Me",
+      recipient: "Ethan",
+      message: inputMessage,
+      avatar: "",
+      timestamp: new Date(),
+    });
     console.log("Sending message:", inputMessage);
     setInputMessage("");
   };
@@ -194,6 +168,7 @@ export default function App() {
       <Breakpoint large up>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
+            {/* Threads */}
             <Grid item xs={3} style={{ maxHeight: "100vh", overflow: "auto" }}>
               <React.Fragment>
                 <CssBaseline />
@@ -213,90 +188,108 @@ export default function App() {
                     Messages
                   </Typography>
                   <List sx={{ mb: 2 }}>
-                    {Object.entries(groupedMessages).map(
-                      ([label, messages]) => (
-                        <React.Fragment key={label}>
+                    {threads.map((thread, index) => {
+                      const [firstMessage] = thread;
+                      const label = getThreadLabel(firstMessage.timestamp);
+                      const badgeContent = thread.length;
+                      return (
+                        <React.Fragment key={index}>
                           <ListSubheader sx={{ bgcolor: "background.paper" }}>
                             {label}
-                          </ListSubheader>
-                          {messages.map(({ id, recipient, message, date }) => (
-                            <ListItem
-                              key={id}
-                              button
-                              onClick={() => handleOpenMessage(id)}
-                            >
-                              <ListItemAvatar>
-                                <Avatar
-                                  alt={recipient[0]}
-                                  src={recipient[0]}
-                                  sx={{
-                                    bgcolor: () => {
-                                      const colors = [
-                                        "#800000", // dark red
-                                        "#008000", // dark green
-                                        "#000080", // dark blue
-                                        "#808000", // dark yellow
-                                        "#800080", // dark magenta
-                                        "#008080", // dark cyan
-                                        "#A35800", // dark orange
-                                        "#400040", // dark purple
-                                      ];
+                          </ListSubheader>{" "}
+                          <ListItem
+                            button
+                            onClick={() => handleOpenThread(index)}
+                            sx={{
+                              bgcolor:
+                                selectedThread === index ? "#000080" : "",
+                            }}
+                          >
+                            <ListItemAvatar>
+                              <Avatar
+                                alt={firstMessage.recipient[0].toUpperCase()}
+                                src={firstMessage.recipient[0].toUpperCase()}
+                                sx={{
+                                  bgcolor: () => {
+                                    const colors = [
+                                      "#800000", // dark red
+                                      "#008000", // dark green
+                                      "#000080", // dark blue
+                                      "#808000", // dark yellow
+                                      "#800080", // dark magenta
+                                      "#008080", // dark cyan
+                                      "#A35800", // dark orange
+                                      "#400040", // dark purple
+                                    ];
 
-                                      const index =
-                                        recipient[0].charCodeAt(0) %
-                                        colors.length;
-                                      return colors[index];
-                                    },
-                                    color: "white",
-                                  }}
-                                />
-                              </ListItemAvatar>
-                              <ListItemText
-                                primary={recipient}
-                                secondary={
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      flexDirection: "column",
-                                    }}
-                                  >
-                                    <span>
-                                      {message.length > 50
-                                        ? `${message.slice(0, 50)}...`
-                                        : message}
-                                    </span>
-                                    <span
-                                      style={{
-                                        paddingTop: "8px",
-                                        color: "#999",
-                                        fontSize: "0.59rem",
-                                      }}
-                                    >
-                                      {label.toLowerCase() === "today"
-                                        ? formatDistanceToNow(new Date(date), {
-                                            addSuffix: true,
-                                          })
-                                        : new Date(date).toLocaleString()}
-                                    </span>
-                                  </Box>
-                                }
-                                primaryTypographyProps={{
-                                  variant: "subtitle1",
-                                }}
-                                secondaryTypographyProps={{
-                                  variant: "body2",
+                                    const index =
+                                      firstMessage.recipient[0].charCodeAt(0) %
+                                      colors.length;
+                                    return colors[index];
+                                  },
+                                  color: "white",
                                 }}
                               />
-                            </ListItem>
-                          ))}
+                            </ListItemAvatar>
+                            <ListItemText
+                              primary={firstMessage.recipient}
+                              secondary={
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                  }}
+                                >
+                                  <span>
+                                    {firstMessage.message.length > 50
+                                      ? `${firstMessage.message.slice(
+                                          0,
+                                          50
+                                        )}...`
+                                      : firstMessage.message}
+                                  </span>
+                                  <span
+                                    style={{
+                                      paddingTop: "8px",
+                                      color: "#999",
+                                      fontSize: "0.59rem",
+                                    }}
+                                  >
+                                    {label.toLowerCase() === "today"
+                                      ? formatDistanceToNow(
+                                          new Date(firstMessage.timestamp),
+                                          {
+                                            addSuffix: true,
+                                          }
+                                        )
+                                      : new Date(
+                                          firstMessage.timestamp
+                                        ).toLocaleString()}
+                                  </span>
+                                </Box>
+                              }
+                              primaryTypographyProps={{
+                                variant: "subtitle1",
+                              }}
+                              secondaryTypographyProps={{
+                                variant: "body2",
+                              }}
+                            />
+                            <ListItemSecondaryAction>
+                              <Badge
+                                badgeContent={badgeContent}
+                                color="primary"
+                              />
+                            </ListItemSecondaryAction>
+                          </ListItem>
                         </React.Fragment>
-                      )
-                    )}
+                      );
+                    })}
                   </List>
                 </Paper>
               </React.Fragment>
             </Grid>
-            {/* Big column */}
+            {/* Chats */}
             <Grid
               item
               xs={9}
@@ -305,8 +298,8 @@ export default function App() {
               alignItems="center"
               style={{ maxHeight: "100vh", width: "100%", overflow: "auto" }}
             >
-              {selectedMessage ? (
-                // Render open message view
+              {selectedThread !== null ? (
+                // Render open thread view
                 <Box sx={{ bgcolor: "background.message.dark", width: "100%" }}>
                   <Typography
                     variant="h5"
@@ -321,20 +314,88 @@ export default function App() {
                     }}
                     bgcolor={"#000000"}
                   >
-                    {
-                      messages.find((item) => item.id === selectedMessage)
-                        ?.recipient
-                    }
+                    {threads[selectedThread][0].recipient}
                   </Typography>
 
-                  <Box className="recipient">
-                    {/* <Avatar src={recipient[0]}></Avatar> */}
-                    <Typography variant="body1">
-                      {
-                        messages.find((item) => item.id === selectedMessage)
-                          ?.message
-                      }
-                    </Typography>
+                  <Box className="messages">
+                    {threads[selectedThread].map((message, index) => (
+                      <Box
+                        key={index}
+                        className="message"
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems:
+                            message.sender === "Me" ? "flex-end" : "flex-start",
+                          py: 1,
+                          px: 2,
+                          mt: 2,
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection:
+                              message.sender === "Me" ? "row" : "row-reverse",
+                          }}
+                        >
+                          <ListItemAvatar>
+                            <Avatar
+                              alt={message.recipient[0].toUpperCase()}
+                              src={message.recipient[0].toUpperCase()}
+                              sx={{
+                                bgcolor: () => {
+                                  const colors = [
+                                    "#800000", // dark red
+                                    "#008000", // dark green
+                                    "#000080", // dark blue
+                                    "#808000", // dark yellow
+                                    "#800080", // dark magenta
+                                    "#008080", // dark cyan
+                                    "#A35800", // dark orange
+                                    "#400040", // dark purple
+                                  ];
+
+                                  const index =
+                                    message.recipient[0].charCodeAt(0) %
+                                    colors.length;
+                                  return colors[index];
+                                },
+                                color: "white",
+                                mx: 2,
+                              }}
+                            />
+                          </ListItemAvatar>
+                          <Paper
+                            sx={{
+                              p: 2,
+                              bgcolor:
+                                message.sender === "Me" ? "#2979ff" : "#e0e0e0",
+                              color: "#000000",
+                              borderRadius: "10px",
+                              width: "70%",
+                            }}
+                          >
+                            {message.message}
+                          </Paper>
+                        </Box>
+
+                        <Typography
+                          variant="body2"
+                          color="textSecondary"
+                          sx={{
+                            alignSelf:
+                              message.sender === "Me"
+                                ? "flex-start"
+                                : "flex-end",
+                            mt: 1,
+                            mx: 10,
+                          }}
+                        >
+                          {new Date(message.timestamp).toLocaleString()}
+                        </Typography>
+                      </Box>
+                    ))}
                   </Box>
 
                   <Grid
@@ -343,8 +404,6 @@ export default function App() {
                     style={{ position: "fixed", bottom: 0, zIndex: 2 }}
                     width="70%"
                     mb={5}
-                    // borderRadius={"20%"}
-                    // bgcolor={"#97B5F3"}
                     boxShadow={"inset 27px -27px 87px #000000"}
                   >
                     {/* Send Message Input */}
@@ -371,27 +430,21 @@ export default function App() {
                   </Grid>
                 </Box>
               ) : (
-                // Render default view
+                // Render no thread selected view
                 <Box
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="center"
-                  alignItems="center"
-                  height="100%"
-                  width="100%"
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
                 >
-                  <img
-                    alt="default"
-                    src={messaging}
-                    style={{ width: "250px" }}
-                  />
-                  <Typography variant="body2" sx={{ mt: 4 }}>
-                    Your new messages will appear here.
+                  <Typography variant="h6" color="textSecondary">
+                    Select a thread to view messages
                   </Typography>
                 </Box>
               )}
             </Grid>
-            {/*  */}
           </Grid>
         </Box>
       </Breakpoint>

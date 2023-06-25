@@ -1,9 +1,10 @@
-.recipient {
-  background-color: rgb(73, 154, 235);
-  max-width: 59%;
-  border-radius: 10px;
-  padding: 20px;
+.me {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
 }
 
-
-
+.recipient {
+  display: flex;
+  margin-bottom: 16px;
+}
